@@ -1,0 +1,32 @@
+instruction,Operand Form,Opcode
+MOV,r/m32, imm32,C7 /0 id
+MOV,r/m32, r32,89 /r
+MOV,r32, r/m32,8B /r
+MOV,r32, imm32,B8 +rd id
+ADD,r/m32, imm8,83 /0 ib
+ADD,r/m32, imm32,81 /0 id
+ADD,r/m32, r32,01 /r
+ADD,r32, r/m32,03 /r
+SUB,r/m32, imm8,83 /5 ib
+SUB,r/m32, imm32,81 /5 id
+SUB,r/m32, r32,29 /r
+SUB,r32, r/m32,2B /r
+DIV,r/m32 ,F7 /6
+INC,r/m32,FF /0
+DEC,r/m32,FF /1
+XOR,EAX, imm32,35 id
+XOR,r/m32, imm32,81/6 id
+XOR,r/m32, imm8,83 /6 ib
+XOR,r/m32, r32,31 /r
+XOR,r32, r/m32,33 /r
+CMP,EAX, imm32,3D id
+CMP,r/m32 , imm32,81 /7 id
+CMP,r/m32, imm8,83 /7 ib
+CMP ,r/m32, r32,39 /r
+CMP,R32, r/m32,3B /r
+PUSH,r32,50+rd
+PUSH,r/m32,FF /6
+POP,r32,58+rd
+POP,r/m32,8F /0
+RET,-,C3
+,,
