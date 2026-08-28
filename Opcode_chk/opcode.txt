@@ -1,32 +1,30 @@
-instruction,Operand Form,Opcode
-MOV,r/m32, imm32,C7 /0 id
-MOV,r/m32, r32,89 /r
-MOV,r32, r/m32,8B /r
-MOV,r32, imm32,B8 +rd id
-ADD,r/m32, imm8,83 /0 ib
-ADD,r/m32, imm32,81 /0 id
-ADD,r/m32, r32,01 /r
-ADD,r32, r/m32,03 /r
-SUB,r/m32, imm8,83 /5 ib
-SUB,r/m32, imm32,81 /5 id
-SUB,r/m32, r32,29 /r
-SUB,r32, r/m32,2B /r
-DIV,r/m32 ,F7 /6
-INC,r/m32,FF /0
-DEC,r/m32,FF /1
-XOR,EAX, imm32,35 id
-XOR,r/m32, imm32,81/6 id
-XOR,r/m32, imm8,83 /6 ib
-XOR,r/m32, r32,31 /r
-XOR,r32, r/m32,33 /r
-CMP,EAX, imm32,3D id
-CMP,r/m32 , imm32,81 /7 id
-CMP,r/m32, imm8,83 /7 ib
-CMP ,r/m32, r32,39 /r
-CMP,R32, r/m32,3B /r
-PUSH,r32,50+rd
-PUSH,r/m32,FF /6
-POP,r32,58+rd
-POP,r/m32,8F /0
-RET,-,C3
-,,
+add,r/m32, imm8,83 /0 ib
+add,r/m32, imm32,81 /0 id
+add,r/m32, r32,01 /r
+add,r32, r/m32,03 /r
+cmp,EAX, imm32,3D id
+cmp,r/m32 , imm32,81 /7 id
+cmp,r/m32, imm8,83 /7 ib
+cmp,r/m32, r32,39 /r
+cmp,r32, r/m32,3B /r
+dec,r/m32,,FF /1
+div,r/m32 ,F7 /6
+inc,r/m32,,FF /0
+mov,r/m32, imm32,C7 /0 id
+mov,r/m32, r32,89 /r
+mov,r32, r/m32,8B /r
+mov,r32, imm32,B8 +rd id
+pop,r32,,58+rd
+pop,r/m32,,8F /0
+push,r32,,50+rd
+push,r/m32,,FF /6
+ret,,,C3
+sub,r/m32, imm8,83 /5 ib
+sub,r/m32, imm32,81 /5 id
+sub,r/m32, r32,29 /r
+sub,r32, r/m32,2B /r
+xor,EAX, imm32,35 id
+xor,r/m32, imm32,81/6 id
+xor,r/m32, imm8,83 /6 ib
+xor,r/m32, r32,31 /r
+xor,r32, r/m32,33 /r

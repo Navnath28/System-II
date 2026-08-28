@@ -1,5 +1,13 @@
-  mov eax,7
+	mov eax,7
 	mov ebx,5
-	addr eax,ebx
+	add eax,ebx
 	sub eax,2
+	div ebx
+	foo eax
+	add eax,[ebx]
+	mov ecx,[edx]
+	sub [esi],[esp]
+	pop 99
+	push & 
 	ret
+	shreyash
