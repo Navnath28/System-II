@@ -5,15 +5,15 @@
 
 typedef struct
 {
-    size_t line_no;
-    size_t startidx;
-} contentT;
-
-typedef struct
-{
     size_t startidx;
     size_t len;
 } lineT;
+
+typedef struct
+{
+    size_t line_no;
+    size_t startidx;
+} contentT;
 
 typedef struct{
 	size_t start;
