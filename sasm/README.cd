@@ -1,0 +1,57 @@
+src/
+
+	-- Contains the implementation of the assembler components.
+
+	main.c — Controls the overall assembler flow.
+	lexer.c — Reads the source file and identifies lines, instructions, and operands.
+	instruction.c — Classifies operands based on their type.
+	register.c — Loads and searches register definitions.
+	opcode.c — Loads and searches instruction definitions.
+
+include/
+	-- Contains header files with structures, enums, and 
+	   function declarations used by the source files.
+
+	lexer.h
+	instruction.h
+	register.h
+	opcode.h
+
+data/
+	-- Contains architecture and assembler definition data 
+	   instead of hard-coding it in C.
+
+	registers.txt — Supported IA-32 registers and their encoding values.
+	opcode.txt — Instructions currently supported by the assembler.
+
+examples/
+	-- Contains sample .asm programs used for manual testing.
+
+tests/
+	-- Contains test cases for checking individual assembler 
+	   components and overall behavior.
+Development Stages
+Stage 1 — Source Reading
+	-- Read the complete assembly file into a memory buffer.
+
+Stage 2 — Line Detection
+	-- Introduced lineT to track the starting position 
+		and length of each source line.
+
+Stage 3 — Content Detection
+	-- Introduced contentT to track the line number and 
+	   beginning of meaningful content.
+
+Stage 4 — Instruction Detection
+	-- Introduced instructionT to locate the instruction/mnemonic in each line.
+
+Stage 5 — Operand Detection
+	-- Introduced operandT to locate each operand using its start and len.
+
+Stage 6 — Operand Classification
+	-- Introduced Operand and OperandType to 
+	   classify operands as register, immediate, memory, etc.
+
+Stage 7 — Data-Driven Definitions
+	-- Moved register and instruction definitions into data/ files 
+	   so they can be loaded and searched instead of being hard-coded.

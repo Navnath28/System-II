@@ -1,0 +1,64 @@
+//======================================================
+//              Extract operands
+//======================================================
+
+    i = 0;
+    while(i < lncnt){
+        operand_count[i] = 0;
+         //Start after mnemonic.
+        j = inst[i].start + inst[i].len;
+        length = lines[i].startidx + lines[i].len;
+         //Skip whitespace.
+        while(j < length && (buf[j] == ' ' || buf[j] == '\t')){
+            j++;
+        }
+         //Remove comment from operand scanning.
+        size_t comment = j;
+        while(comment < length){
+            if(buf[comment] == ';'){
+                length = comment;
+                break;
+            }
+            comment++;
+        }
+         //No operand.
+        if(j >= length){
+            i++;
+            continue;
+        }
+         //First operand.
+        operands[i * 2].start = j;
+        while(j < length && buf[j] != ','){
+            j++;
+        }
+         //Remove trailing whitespace.
+        size_t operand_end = j;
+        while(operand_end > operands[i * 2].start && (buf[operand_end - 1] == ' ' || buf[operand_end - 1] == '\t')){
+            operand_end--;
+        }
+        operands[i * 2].len = operand_end - operands[i * 2].start;
+        if(operands[i * 2].len > 0)
+            operand_count[i]++;
+         //Second operand.
+        if(j < length && buf[j] == ','){
+            j++;
+            while(j < length && (buf[j] == ' ' || buf[j] == '\t')){
+                j++;
+            }
+            if(j < length){
+                operands[i * 2 + 1].start = j;
+                while(j < length && buf[j] != ',' ){
+                    j++;
+                }
+                operand_end = j;
+                while(operand_end > operands[i * 2 + 1].start &&
+                      (buf[operand_end - 1] == ' ' || buf[operand_end - 1] == '\t')){
+                    operand_end--;
+                }
+                operands[i * 2 + 1].len = operand_end - operands[i * 2 + 1].start;
+                if(operands[i * 2 + 1].len > 0)
+                    operand_count[i]++;
+            }
+        }
+        i++;
+    }

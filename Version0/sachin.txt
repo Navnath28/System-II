@@ -1,0 +1,96 @@
+//======================================================
+// Operand identification
+//======================================================
+    printf("\nOperand Identification:\n");
+    i = 0;
+    while(i < lncnt){
+        if(inst[i].len == 0){
+            i++;
+            continue;
+        }
+        printf("Line %zu: ",i + 1);
+         //Print mnemonic.
+        for(j = 0; j < inst[i].len; j++)
+            putchar(buf[inst[i].start + j]);
+        printf("\n");
+        size_t op = 0;
+        while(op < operand_count[i]){
+            operandT current = operands[i * 2 + op];
+             //Print operand itself.
+            printf("  Operand %zu: ",op + 1);
+            for(j = 0; j < current.len; j++)
+                putchar(buf[current.start + j]);
+            printf(" -> ");
+             //register
+            char *registers[] = {"eax","ebx","ecx","edx","esi","edi","esp","ebp"};
+            size_t register_count = sizeof(registers)/sizeof(registers[0]);
+            int is_register = 0;
+            size_t r = 0;
+            while(r < register_count){
+                size_t k = 0;
+                while(k < current.len && registers[r][k] != '\0' && tolower(buf[current.start + k]) == registers[r][k]){
+                    k++;
+                }
+                if(k == current.len &&
+                   registers[r][k] == '\0'){
+                    is_register = 1;
+                    break;
+                }
+                r++;
+            }
+             //memory
+            int is_memory = 0;
+            if(current.len >= 2 && buf[current.start] == '[' && buf[current.start + current.len - 1] == ']'){
+                is_memory = 1;
+            }
+             //constant
+            int is_constant = 1;
+            size_t k = 0;
+             /*
+			 * Decimal / hexadecimal constant.
+             *
+             * Accepted examples:
+             * 10
+             * 123
+             * 0x10
+             * 10h
+             */
+            if(current.len == 0){
+                is_constant = 0;
+            }
+            else{
+                size_t p = current.start;
+                if(buf[p] == '-' || buf[p] == '+')
+                    p++;
+                if(p >= current.start + current.len){
+                    is_constant = 0;
+                }
+                else{
+                    while(p < current.start + current.len){
+                        if(!isxdigit(buf[p])){
+                             //Allow x/X only in 0x form
+                            if(buf[p] != 'x' &&
+                               buf[p] != 'X'){
+                                is_constant = 0;
+                                break;
+                            }
+                        }
+                        p++;
+                    }
+                }
+            }
+             //print
+
+            if(is_register)
+                printf("Register\n");
+            else if(is_memory)
+                printf("Memory\n");
+            else if(is_constant)
+                printf("Constant\n");
+            else
+                printf("Symbol\n");
+            op++;
+        }
+        i++;
+    }
+

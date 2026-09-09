@@ -1,0 +1,17 @@
+Version 0
+	-- lexer + mnemonic-validation prototype
+
+#Build
+gcc main.c -o main
+./main opcode.txt test.asm
+
+main.c:
+	-- It extracts and check the .asm file.
+	-- Identifies valid instructions and operands
+
+opcode.txt:
+	-- Conatins opcode table intxt format seperated by comma < , >
+	-- <instruction>,<operand1>,<operand2>,<opcode>
+
+test.asm:
+	-- It is test .asm file.
