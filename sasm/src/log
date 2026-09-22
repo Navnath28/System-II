@@ -1,0 +1,60 @@
+int find_operands(char *content, lineT *lines, contentT *contents, instructionT *instructions, size_t instruction_count, operandT ***operands, size_t **operand_count)
+{
+    size_t i;
+    size_t j;
+    size_t start;
+    size_t end;
+    size_t count;
+    size_t line_end;
+    *operands = malloc(sizeof(operandT *) * instruction_count);
+    if (*operands == NULL){
+        return 0;
+    }
+    *operand_count = malloc(sizeof(size_t) * instruction_count);
+    if (*operand_count == NULL){
+        free(*operands);
+        return 0;
+    }
+    for (i = 0; i < instruction_count; i++){
+        count = 0;
+        line_end = lines[i].startidx + lines[i].len;
+         //Start after the instruction.
+        start = instructions[i].start +
+                instructions[i].len;
+         //Skip spaces and tabs after instruction.
+        while (start < line_end && (content[start] == ' ' || content[start] == '\t'))
+        {
+            start++;
+        }
+         //Maximum of 3 operands for now.
+        (*operands)[i] = malloc(sizeof(operandT) * 3);
+        if ((*operands)[i] == NULL) return 0;
+        while (start < line_end){
+             //Find the end of the operand.
+            end = start;
+            while (end < line_end && content[end] != ',') end++;
+            //Remove spaces/tabs at the end.
+            j = end;
+            while (j > start && (content[j - 1] == ' ' || content[j - 1] == '\t'))
+            {
+                j--;
+            }
+            (*operands)[i][count].start = start;
+            (*operands)[i][count].len = j - start;
+            count++;
+             //Move past comma.
+            if (end < line_end && content[end] == ',')
+            {
+                end++;
+                while (end < line_end && (content[end] == ' ' || content[end] == '\t'))
+                {
+                    end++;
+                }
+            }
+            start = end;
+        }
+        (*operand_count)[i] = count;
+    }
+    return 1;
+}
+

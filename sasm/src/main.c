@@ -4,6 +4,8 @@
 #include "lexer.h"
 #include "instruction.h"
 #include "register.h"
+#include "data_section.h"
+
 /* * Temporary function for displaying the result of * lexical analysis and operand classification. * * This function will eventually be moved to output.c. */ 
 void display_result(char *content, contentT *contents, instructionT *instructions, size_t instruction_count, operandT **operands, size_t *operand_count, Register *registers, size_t register_count){
 
@@ -57,21 +59,34 @@ int main(int argc, char *argv[])
     lineT *lines;
     size_t line_count;
 	
-	contentT *contents;
-	size_t content_count;
+    contentT *contents;
+    size_t content_count;
 
-	instructionT *instructions;
+    	// data section
+    dataT *data;
+    size_t data_count;
+
+    dataOutputT *data_output;
+    size_t data_output_count;
+
+    instructionT *instructions;
     size_t instruction_count;
     
-	operandT **operands;
+    operandT **operands;
     size_t *operand_count;
    
     Register *registers; 
 	size_t register_count; 
 	Operand *classified;
-
-	size_t i;
+ 
+    size_t i;
     size_t j;
+    
+    data = NULL;
+    data_count = 0;
+
+    data_output = NULL;
+    data_output_count = 0;
 
     if (argc != 2)
     {
@@ -106,6 +121,32 @@ int main(int argc, char *argv[])
         free_registers(registers, register_count);
         return 1;
     }
+    
+    if (!find_data(content, lines, contents, content_count, &data, &data_count))
+    {
+	    printf("Unable to find data\n");
+
+	    free(contents);
+	    free(lines);
+	    free(content);
+	    free_registers(registers, register_count);
+
+	    return 1;
+    }
+    
+    if (!encode_data(content, data, data_count,
+                &data_output, &data_output_count))
+    {
+	    printf("Unable to encode data\n");
+
+	    free_data(data);
+	    free(contents);
+	    free(lines);
+	    free(content);
+	    free_registers(registers, register_count);
+
+	    return 1;
+    }
 	/* first v1
     for (i = 0; i < line_count; i++)
     {
@@ -117,6 +158,14 @@ int main(int argc, char *argv[])
         printf("\n");
     }
 	*/
+	
+	
+	for (i = 0; i < data_output_count; i++)
+	{
+	    printf("%08zX %s\n",
+		   data_output[i].offset,
+		   data_output[i].opcode);
+	}
 
 	for (i = 0; i < content_count; i++)
     {

@@ -119,7 +119,6 @@ int find_instructions(char *content, lineT *lines, contentT *contents, size_t co
     *instruction_count = content_count;
     return 1;
 }
-
 int find_operands(char *content, lineT *lines, contentT *contents, instructionT *instructions, size_t instruction_count, operandT ***operands, size_t **operand_count)
 {
     size_t i;
@@ -179,3 +178,4 @@ int find_operands(char *content, lineT *lines, contentT *contents, instructionT 
     }
     return 1;
 }
+
