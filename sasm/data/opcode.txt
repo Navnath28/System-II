@@ -1,0 +1,31 @@
+add,r/m32, imm8,83 /0 ib
+add,r/m32, imm32,81 /0 id
+add,r/m32, r32,01 /r
+add,r32, r/m32,03 /r
+cmp,EAX, imm32,3D id
+cmp,r/m32 , imm32,81 /7 id
+cmp,r/m32, imm8,83 /7 ib
+cmp,r/m32, r32,39 /r
+cmp,r32, r/m32,3B /r
+dec,r/m32,,FF /1
+div,r/m32 ,F7 /6
+inc,r/m32,,FF /0
+mov,r/m32, imm32,C7 /0 id
+mov,r/m32, r32,89 /r
+mov,r32, r/m32,8B /r
+mov,r32, imm32,B8 +rd id
+pop,r32,,58+rd
+pop,r/m32,,8F /0
+push,r32,,50+rd
+push,r/m32,,FF /6
+ret,,,C3
+sub,r/m32, imm8,83 /5 ib
+sub,r/m32, imm32,81 /5 id
+sub,r/m32, r32,29 /r
+sub,r32, r/m32,2B /r
+xor,EAX, imm32,35 id
+xor,r/m32, imm32,81/6 id
+xor,r/m32, imm8,83 /6 ib
+xor,r/m32, r32,31 /r
+xor,r32, r/m32,33 /r
+zoo
