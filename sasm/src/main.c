@@ -4,51 +4,10 @@
 #include "lexer.h"
 #include "instruction.h"
 #include "register.h"
-/* * Temporary function for displaying the result of * lexical analysis and operand classification. * * This function will eventually be moved to output.c. */ 
-void display_result(char *content, contentT *contents, instructionT *instructions, size_t instruction_count, operandT **operands, size_t *operand_count, Register *registers, size_t register_count){
+#include "output.h"
+#include "validate.h"
+#include "opcode.h"
 
-    size_t i;
-    size_t j;
-    size_t k;
-    Operand *classified;
-
-    for (i = 0; i < instruction_count; i++)
-    {
-        printf("Line %zu: ", contents[i].line_no);
-
-        for (j = 0; j < instructions[i].len; j++)
-            printf("%c", content[instructions[i].start + j]);
-
-        printf("\n");
-        if (!classify_operands(content, operands[i], operand_count[i], registers, register_count, &classified))
-        {
-            printf("Unable to classify operands\n");
-            continue;
-        }
-        for (j = 0; j < operand_count[i]; j++)
-        {
-            printf("    Operand %zu: ", j + 1);
-             //operandT tells us where the operand exists
-             //in the original source buffer.
-            for (k = 0; k < operands[i][j].len; k++)
-                printf("%c", content[operands[i][j].start + k]);
-            printf(" -> ");
-            if (classified[j].type == OPERAND_REGISTER)
-                printf("REGISTER");
-            else if (classified[j].type == OPERAND_IMMEDIATE)
-                printf("IMMEDIATE");
-            else if (classified[j].type == OPERAND_MEMORY)
-                printf("MEMORY");
-            else if (classified[j].type == OPERAND_LABEL)
-                printf("LABEL");
-            else
-                printf("UNKNOWN");
-
-            printf("\n");
-        }
-        free(classified);
-    }
-}
 int main(int argc, char *argv[])
 {
     char *content;
@@ -62,6 +21,9 @@ int main(int argc, char *argv[])
 
 	instructionT *instructions;
     size_t instruction_count;
+
+	Opcode *opcodes;
+	size_t opcode_count;
     
 	operandT **operands;
     size_t *operand_count;
@@ -83,6 +45,13 @@ int main(int argc, char *argv[])
 		printf("Unable to load registers\n"); 
 		return 1; 
 	}
+
+	if (!load_opcodes("data/opcode.txt", &opcodes, &opcode_count)){
+    	printf("Unable to load opcodes\n");
+    	free_registers(registers, register_count);
+    	return 1;
+	}
+
     if (!read_source(argv[1], &content, &content_len))
     {
         printf("Unable to read file\n");
@@ -116,8 +85,8 @@ int main(int argc, char *argv[])
         }
         printf("\n");
     }
-	*/
-
+	
+	v2
 	for (i = 0; i < content_count; i++)
     {
         printf("Line %zu: startidx = %zu : ",
@@ -133,7 +102,7 @@ int main(int argc, char *argv[])
 
         printf("\n");
     }
-
+	*/
 	if (!find_instructions(content, lines, contents, content_count, &instructions, &instruction_count))
     {
         printf("Unable to find instructions\n");
@@ -156,7 +125,11 @@ int main(int argc, char *argv[])
 		return 1;
     }
 
-	display_result(content, contents, instructions, instruction_count, operands, operand_count, registers, register_count);
+	if (!validate_instructions(content, contents, instructions, instruction_count, operands, operand_count, opcodes, opcode_count, registers, register_count)){
+    	printf("Validation failed\n");
+    	return 1;
+	}
+	//display_result(content, contents, instructions, instruction_count, operands, operand_count, registers, register_count);
 	/*
     for (i = 0; i < instruction_count; i++){
         printf("Line %zu: ", contents[i].line_no);
@@ -178,6 +151,8 @@ int main(int argc, char *argv[])
         free(operands[i]);
     }
 
+    free_registers(registers, register_count);
+    free_opcodes(opcodes, opcode_count);
     free(operands);
     free(operand_count);
 	free(instructions);
