@@ -1,6 +1,4 @@
 	mov eax,7
-	mov ebx,5
-	add eax,ebx
 	sub eax,2
 	div ebx
 	foo eax

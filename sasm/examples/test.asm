@@ -1,4 +1,3 @@
-
         mov eax, 10
     add eax, ebx
         sub ecx, edx
@@ -12,4 +11,3 @@
         jmp start
     mov eax, [ebx]
         mov ecx, [edx]
-
