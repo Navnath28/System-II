@@ -1,0 +1,10 @@
+14/09/26
+added output module
+output.h
+output.c
+included it in display_result() in main.c
+
+todo:
+read opcode.txt efficiently:
+	-- read each line(read char by char [ first comma store all prev ]).
+	-- 
